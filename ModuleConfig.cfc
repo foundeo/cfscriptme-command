@@ -1,11 +1,7 @@
 component {
-	function configure() {
+	function configure(required binder) {
 
-		wirebox = {
-			customDSL ={
-				"toscript" = "models.toscript.toscript"
-			} 
-		}
+		binder.map("toscript").to("models.toscript.toscript");
 
 	}
 }
