@@ -1,5 +1,5 @@
 component {
-	function configure(required binder) {
+	function configure() {
 
 		
 	}
