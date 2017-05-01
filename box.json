@@ -1,0 +1,45 @@
+{
+    "name":"cfscriptme-command",
+    "version":"0.1.0",
+    "author":"Pete Freitag / Foundeo Inc.",
+    "location":"foundeo/cfscriptme-command#v0.1.0",
+    "homepage":"https://github.com/foundeo/cfscriptme-command",
+    "documentation":"https://github.com/foundeo/cfscriptme-command",
+    "repository":{
+        "type":"git",
+        "URL":"https://github.com/foundeo/cfscriptme-command"
+    },
+    "bugs":"https://github.com/foundeo/cfscriptme-command/issues",
+    "slug":"cfscriptme-command",
+    "shortDescription":"A CommandBox comand for converting CFML tags to Script",
+    "type":"commandbox-modules",
+    "keywords":[
+        "cfml",
+        "cfscript",
+        "command"
+    ],
+    "private":false,
+    "license":[
+        {
+            "type":"GPL",
+            "URL":"https://github.com/foundeo/cfscriptme-command"
+        }
+    ],
+    "dependencies":{
+        "toscript":"git://github.com/foundeo/toscript.git"
+    },
+    "devDependencies":{
+        
+    },
+    "installPaths":{
+        "toscript":"modules/toscript/models"
+    },
+    "scripts":{
+        "postVersion":"package set location='foundeo/cfscriptme-command#v`package version`'",
+        "onRelease":"publish",
+        "postPublish":"!git push && !git push --tags"
+    },
+    "ignore":[
+        
+    ]
+}
