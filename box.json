@@ -32,7 +32,7 @@
         
     },
     "installPaths":{
-        "toscript":"modules/toscript/models"
+        
     },
     "scripts":{
         "postVersion":"package set location='foundeo/cfscriptme-command#v`package version`'",

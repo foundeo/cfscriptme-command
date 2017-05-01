@@ -88,7 +88,7 @@ component extends="commandbox.system.BaseCommand" aliases="cfscriptme" excludeFr
 
 	private function convertFile(required source, required destination, boolean force=false, pathPrefix="") {
 
-		var toScript = getInstance("toscript");
+		var toScript = getInstance("toscript@toscript.toscript");
 
 		var result = toScript.toScript(filePath=arguments.source);
 
