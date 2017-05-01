@@ -1,1 +1,5 @@
-component {}
+component {
+	function configure() {
+
+	}
+}
