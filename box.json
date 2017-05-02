@@ -1,8 +1,8 @@
 {
     "name":"cfscriptme-command",
-    "version":"patch",
+    "version":"0.0.1",
     "author":"Pete Freitag / Foundeo Inc.",
-    "location":"foundeo/cfscriptme-command#vpatch",
+    "location":"foundeo/cfscriptme-command#v0.0.1",
     "homepage":"https://github.com/foundeo/cfscriptme-command",
     "documentation":"https://github.com/foundeo/cfscriptme-command",
     "repository":{
