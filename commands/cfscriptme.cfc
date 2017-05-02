@@ -16,7 +16,7 @@ component extends="commandbox.system.BaseCommand" aliases="cfscriptme" excludeFr
 	**/
 	function run( required source, destination="", boolean force=false, boolean recursive=true)  {
 		var fileInfo = "";
-		print.orangeLine("cfscript.me v1.0.0 built by Foundeo Inc.").line();
+		print.orangeLine("cfscript.me v#getVersion()# built by Foundeo Inc.").line();
 		print.grayLine("    ___                      _             ");
 		print.grayLine("   / __)                    | |            ");		
 		print.grayLine(" _| |__ ___  _   _ ____   __| |_____  ___  ");
@@ -86,9 +86,24 @@ component extends="commandbox.system.BaseCommand" aliases="cfscriptme" excludeFr
 
 	}
 
+	private function getVersion() {
+		if (!variables.keyExists("version")) {
+			local.boxPath = reReplace(getCurrentTemplatePath(), "commands[/\\]cfscriptme.cfc$", "box.json");
+			local.boxJSON = fileRead(local.boxPath);
+			if (isJSON(local.boxJSON)) {
+				local.box = deserializeJSON(local.boxJSON);
+				variables.version = local.box.version;	
+			} else {
+				return "Unknown Version: box.json was not JSON";
+			}
+			
+		}
+		return variables.version;
+	}
+
 	private function convertFile(required source, required destination, boolean force=false, pathPrefix="") {
 
-		var toScript = getInstance("cfscriptme-command:model:toscript.ToScript");
+		var toScript = getInstance("ToScript@cfscriptme-command");
 
 		var result = toScript.toScript(filePath=arguments.source);
 
@@ -128,7 +143,7 @@ component extends="commandbox.system.BaseCommand" aliases="cfscriptme" excludeFr
 		
 
 		if (!result.converted) {
-			print.greenLine("✅  (Already CFML Script): " & normalizedPath);
+			print.orangeLine("✅  (Already CFML Script): " & normalizedPath);
 			if (arguments.source != arguments.destination) {
 				fileWrite(arguments.destination, result.code);
 			}
