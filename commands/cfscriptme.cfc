@@ -6,83 +6,87 @@
  * cfscriptme file.cfc
  * {code}
  **/
-component extends="commandbox.system.BaseCommand" aliases="cfscriptme" excludeFromHelp=false {
+component extends="commandbox.system.BaseCommand" excludeFromHelp=false {
 
 	/**
-	* @source.hint A CFC file or directory
-	* @destination.hint The resulting file or directory, if omitted overwrites
+	* @sourcePath.hint A CFC file or directory
+	* @destinationPath.hint The resulting file or directory, if omitted overwrites
 	* @force.hint Force writing the file even if there are errors, default to false. 
-	* @recursive.hint When a directory is specified it goes recursivly through all cfc files.
+	* @recursive.hint When a directory is specified it goes recursivly through all cfc files. Default is true
 	**/
-	function run( required source, destination="", boolean force=false, boolean recursive=true)  {
+	function run( required sourcePath, destinationPath="", boolean force=false, boolean recursive=true)  {
 		var fileInfo = "";
-		print.orangeLine("cfscript.me v#getVersion()# built by Foundeo Inc.").line();
-		print.grayLine("    ___                      _             ");
-		print.grayLine("   / __)                    | |            ");		
-		print.grayLine(" _| |__ ___  _   _ ____   __| |_____  ___  ");
-		print.grayLine("(_   __) _ \| | | |  _ \ / _  | ___ |/ _ \ ");
-		print.grayLine("  | | | |_| | |_| | | | ( (_| | ____| |_| |");
-		print.grayLine("  |_|  \___/|____/|_| |_|\____|_____)\___/ ");
-		print.grayLine("                                         inc.");
-		print.line();
-
-		if (!fileExists(arguments.source) && !directoryExists(arguments.source)) {
-			print.boldRedLine("Sorry: #arguments.source# is not a file or directory.");
+		print
+	        .orangeLine("cfscript.me v#getVersion()# built by Foundeo Inc.")
+	        .line()
+	        .grayLine("    ___                      _             ")
+	        .grayLine("   / __)                    | |            ")
+	        .grayLine(" _| |__ ___  _   _ ____   __| |_____  ___  ")
+	        .grayLine("(_   __) _ \| | | |  _ \ / _  | ___ |/ _ \ ")
+	        .grayLine("  | | | |_| | |_| | | | ( (_| | ____| |_| |")
+	        .grayLine("  |_|  \___/|____/|_| |_|\____|_____)\___/ ")
+	        .grayLine("                                         inc.")
+	        .line();
+		arguments.sourcePath = fileSystemUtil.resolvePath( arguments.sourcePath );
+		if (!fileExists(arguments.sourcePath) && !directoryExists(arguments.sourcePath)) {
+			error("Sorry: #arguments.sourcePath# is not a file or directory.");
 			return;
 		}
 
-		fileInfo = getFileInfo(arguments.source);
+		fileInfo = getFileInfo(arguments.sourcePath);
 		
 
-		if (!len(arguments.destination)) {
-			arguments.destination = arguments.source;
+		if (!len(arguments.destinationPath)) {
+			arguments.destinationPath = arguments.sourcePath;
+		} else {
+			arguments.destinationPath = fileSystemUtil.resolvePath( arguments.destinationPath );
 		}
 
 		if (!fileInfo.canRead) {
-			print.boldReadLine("Sorry: No read permission for source path");
+			error("Sorry: No read permission for source path");
 			return;
 		}
 
 		if (fileInfo.type == "file") {
-			convertFile(source=arguments.source, destination=arguments.destination, force=arguments.force, pathPrefix=getDirectoryFromPath(arguments.source));
+			convertFile(source=arguments.sourcePath, destination=arguments.destinationPath, force=arguments.force, pathPrefix=getDirectoryFromPath(arguments.sourcePath));
 		} else {
 
-			if (!directoryExists(arguments.destination)) {
-				directoryCreate(arguments.destination);
+			if (!directoryExists(arguments.destinationPath)) {
+				directoryCreate(arguments.destinationPath);
 			}
 
-			if (right(arguments.destination, 1) != "/" && right(arguments.destination, 1) != "\") {
-				arguments.destination = arguments.destination & "/";
+			if (right(arguments.destinationPath, 1) != "/" && right(arguments.destinationPath, 1) != "\") {
+				arguments.destinationPath = arguments.destinationPath & "/";
 			}
 
-			if (right(arguments.source, 1) != "/" && right(arguments.source, 1) != "\") {
-				arguments.source = arguments.source & "/";
+			if (right(arguments.sourcePath, 1) != "/" && right(arguments.sourcePath, 1) != "\") {
+				arguments.sourcePath = arguments.sourcePath & "/";
 			}
-			//fixme windows path seperator
+			
 
 
-			fileInfo = getFileInfo(arguments.destination);
+			fileInfo = getFileInfo(arguments.destinationPath);
 			if (fileInfo.type == "file") {
-				print.boldReadLine("Sorry: source path is a directory but destination is a file");
+				error("Sorry: source path is a directory but destination is a file");
 				return;
 			}
 
-			local.paths = directoryList(arguments.source, arguments.recursive, "path", "*.cfc");
+			local.paths = directoryList(arguments.sourcePath, arguments.recursive, "path", "*.cfc");
 
 			for (local.path in local.paths) {
-				local.dest = replace(local.path, arguments.source, arguments.destination);
+				local.dest = replace(local.path, arguments.sourcePath, arguments.destinationPath);
 				if (!directoryExists(getDirectoryFromPath(local.dest))) {
 
 					directoryCreate(getDirectoryFromPath(local.dest));
 
 				}
-				convertFile(source=local.path, destination=local.dest, force=arguments.force, pathPrefix=arguments.source);
+				convertFile(source=local.path, destination=local.dest, force=arguments.force, pathPrefix=arguments.sourcePath);
 			}
 
 		}
 
 
-		print.line().line("Done.").line();
+		print.line().line("Done. Bugs / Suggestions: https://github.com/foundeo/toscript/issues").line();
 
 	}
 
@@ -143,7 +147,7 @@ component extends="commandbox.system.BaseCommand" aliases="cfscriptme" excludeFr
 		
 
 		if (!result.converted) {
-			print.orangeLine("✅  (Already CFML Script): " & normalizedPath);
+			print.yellowLine("#checkMark()#  (Already CFML Script): " & normalizedPath);
 			if (arguments.source != arguments.destination) {
 				fileWrite(arguments.destination, result.code);
 			}
@@ -151,7 +155,7 @@ component extends="commandbox.system.BaseCommand" aliases="cfscriptme" excludeFr
 		}
 
 		if (arrayLen(result.errors)) {
-			print.redLine("🔴 Error: " & normalizedPath);
+			print.redLine("#errorMark()# Error: " & normalizedPath);
 			for (local.err in result.errors) {
 				if (local.err.keyExists("error") && local.err.error.keyExists("message")) {
 					print.indentedYellowLine(local.err.error.message);	
@@ -159,7 +163,7 @@ component extends="commandbox.system.BaseCommand" aliases="cfscriptme" excludeFr
 					print.indentedYellowLine("Unable to convert: " & local.err.tag);
 				} else {
 					print.indentedYellowLine("Unknown Error");
-				}
+				} 
 				
 			}
 			if (!arguments.force) {
@@ -174,13 +178,29 @@ component extends="commandbox.system.BaseCommand" aliases="cfscriptme" excludeFr
 		fileWrite(arguments.destination, result.code);
 
 
-		print.greenLine("✅  (Converted): " & normalizedPath);
+		print.greenLine("#checkMark()#  (Converted): " & normalizedPath);
 
 
 
 
 
 
+	}
+
+	function checkMark() {
+		if (fileSystemUtil.isWindows()) {
+			return "+";
+		} else {
+			return "✅";
+		}
+	}
+
+	function errorMark() {
+		if (fileSystemUtil.isWindows()) {
+			return "!";
+		} else {
+			return "🔴";
+		}
 	}
 
 }
