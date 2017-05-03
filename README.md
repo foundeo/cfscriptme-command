@@ -1,7 +1,4 @@
-# cfscriptme-command
-
 A CommandBox command for CFML Tag to Script Conversion. This command uses the same engine as [cfscript.me](http://cfscript.me/)
-
 
 ## To Install
 
