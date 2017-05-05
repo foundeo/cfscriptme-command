@@ -178,7 +178,7 @@ component extends="commandbox.system.BaseCommand" excludeFromHelp=false {
 		fileWrite(arguments.destination, result.code);
 
 
-		print.greenLine("#checkMark()#  (Converted): " & normalizedPath);
+		print.greenLine("#checkMark()#  (Converted): " & normalizedPath).toConsole();
 
 
 
