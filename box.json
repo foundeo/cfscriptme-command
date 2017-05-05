@@ -1,8 +1,8 @@
 {
     "name":"cfscript.me Command",
-    "version":"0.1.4",
+    "version":"0.1.5",
     "author":"Pete Freitag / Foundeo Inc.",
-    "location":"foundeo/cfscriptme-command#v0.1.4",
+    "location":"foundeo/cfscriptme-command#v0.1.5",
     "homepage":"https://github.com/foundeo/cfscriptme-command",
     "documentation":"https://github.com/foundeo/cfscriptme-command",
     "repository":{
