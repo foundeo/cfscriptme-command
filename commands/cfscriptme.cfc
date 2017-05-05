@@ -132,7 +132,7 @@ component extends="commandbox.system.BaseCommand" excludeFromHelp=false {
 				print.redLine("Error Cannot Write Destination: " & arguments.destination);
 			}
 
-			if (!arguments.force) {
+			if (!arguments.force && result.converted && arguments.source != arguments.destination) {
 				local.answer = ask("Can I overwrite #normalizedPath#? (yes/no): ");
 
 				if (left(local.answer,1) != "y") {
