@@ -112,6 +112,7 @@ component extends="commandbox.system.BaseCommand" excludeFromHelp=false {
 		var result = toScript.toScript(filePath=arguments.source);
 
 		var normalizedPath = replace(arguments.source, arguments.pathPrefix, "");
+		var normalizedPath2 = replace(arguments.destination, arguments.pathPrefix, "");
 
 		var fileInfo = getFileInfo(arguments.source);
 
@@ -133,10 +134,10 @@ component extends="commandbox.system.BaseCommand" excludeFromHelp=false {
 			}
 
 			if (!arguments.force && result.converted && arguments.source != arguments.destination) {
-				local.answer = ask("Can I overwrite #normalizedPath#? (yes/no): ");
+				local.answer = ask("Can I overwrite #normalizedPath2#? (yes/no): ");
 
 				if (left(local.answer,1) != "y") {
-					print.indentedYellowLine("Aye Captin, skipped #normalizedPath#");
+					print.indentedYellowLine("Aye Captin, skipped #normalizedPath2#");
 					return;
 				}
 
