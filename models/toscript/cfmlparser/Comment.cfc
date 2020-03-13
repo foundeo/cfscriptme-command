@@ -9,6 +9,7 @@ component extends="Statement" {
 		if (getName() == "!---") {
 			text = replace(text, "<!---", "", "ALL");
 			text = replace(text, "--->", "", "ALL");
+			text = trim(text);
 		}
 		return text;
 	}

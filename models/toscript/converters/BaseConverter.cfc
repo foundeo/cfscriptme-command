@@ -55,8 +55,12 @@ component {
 	 * Does the generic CF11+ conversion format cftag(arg1=a,arg2=b) 
 	 */
 	public string function toScriptGeneric(tag) {
-		var s = trim(lCase(tag.getName())) & "( ";
+		var s = trim(lCase(tag.getName()));
 		var attributes = tag.getAttributes();
+		if( attributes.isEmpty() ) {
+			s&= "();";
+		} else {
+			s&= "( ";
 		var attr = "";
 		var first = true;
 		for (attr in attributes) {
@@ -66,7 +70,9 @@ component {
 			s &= attr & "=" & unPound(attributes[attr]);
 			first = false;
 		}
-		return s & " );";
+			s&= " );"
+		}
+		return s;
 	}
 
 	public string function getIndentChars() {
