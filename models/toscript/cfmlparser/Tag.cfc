@@ -42,7 +42,7 @@ component extends="Statement" {
 			//custom tag assume true
 			return true;
 		}
-		return listFindNoCase("cfoutput,cfmail,cfsavecontent,cfquery,cfdocument,cfpdf,cfhtmltopdf,cfhtmltopdfitem,cfscript,cfform,cfloop,cfif,cfelse,cfelseif,cftry,cfcatch,cffinally,cfstoredproc,cfswitch,cfcase,cfdefaultcase,cfcomponent,cffunction,cfchart,cfclient,cfdiv,cfdocumentitem,cfdocumentsection,cfformgroup,cfgrid,cfhttp,cfimap,cfinterface,cfinvoke,cflayout,cflock,cflogin,cfmap,cfmenu,cfmodule,cfpod,cfpresentation,cfthread,cfreport,cfsilent,cftable,cftextarea,cftimer,cftransaction,cftree,cfzip,cfwindow,cfxml", getName());
+		return listFindNoCase("cfoutput,cfmail,cfmailpart,cfsavecontent,cfquery,cfdocument,cfpdf,cfhtmltopdf,cfhtmltopdfitem,cfscript,cfform,cfloop,cfif,cfelse,cfelseif,cftry,cfcatch,cffinally,cfstoredproc,cfswitch,cfcase,cfdefaultcase,cfcomponent,cffunction,cfchart,cfclient,cfdiv,cfdocumentitem,cfdocumentsection,cfformgroup,cfgrid,cfhttp,cfimap,cfinterface,cfinvoke,cflayout,cflock,cflogin,cfmap,cfmenu,cfmodule,cfpod,cfpresentation,cfthread,cfreport,cfsilent,cftable,cftextarea,cftimer,cftransaction,cftree,cfzip,cfwindow,cfxml", getName());
 	}
 
 	public string function getAttributeContent(stripTrailingSlash=false) {

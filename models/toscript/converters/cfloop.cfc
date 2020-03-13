@@ -47,8 +47,29 @@ component extends="BaseConverter" {
 				s = s & "++";
 			}
 			s = s & " ) {";
+		} else if (structKeyExists(attr, "query")) {
+			s = "cfloop( query= " & attr.query;
+			if (structKeyExists(attr, "startrow")) {
+				s = s & " startRow= " & unPound(attr.startrow);
+			}
+			if (structKeyExists(attr, "endrow")) {
+				s = s & " endRow= " & unPound(attr.endrow);
+			}
+			if (structKeyExists(attr, "maxrows")) {
+				s = s & " maxRows= " & unPound(attr.maxrows);
+			}
+			s = s & " ) {";
 		} else {
-			throw(message="Unimplemented cfloop condition: #tag.getAttributeContent()# ");
+			s= "cfloop ( ";
+			var first = true;
+			for (a in attr) {
+				if (!first) { 
+					s&= ", "; 
+				}
+				s &= a & "=" & unPound(attr[a]);
+				first = false;
+			}
+			s&= " ) {";
 		}
 		
 		return s;
